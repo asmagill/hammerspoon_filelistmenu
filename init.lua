@@ -252,7 +252,7 @@ local l_changeWatcher = function(self, paths)
     end
     if doUpdate then
         self.lastChangeSeen = os.date()
-        self.menuListRawdata = nil        -- only rebuild when they actually look at it
+        self.menuListRawData = nil        -- only rebuild when they actually look at it
         collectgarbage()
         if self.warnings then print("Menu "..self.label.." Updated: "..name) end
     end
