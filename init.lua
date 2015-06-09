@@ -185,7 +185,8 @@ local l_subFolderEval = function(self, x)
         local populateNeeded = (y == 0) or (self.subFolderBehavior == 0)
         self.subFolderBehavior = y
         if populateNeeded then
-            self.menuListRawdata = nil
+            self.menuListRawData = nil
+            collectgarbage()
         else
             l_sortMenuItems(self)
         end
@@ -206,7 +207,7 @@ local l_doFileListMenu = function(self, mods)
             { title = "Sub Directories - Before",  checked = ( self.subFolderBehavior == 1 ), fn = function() l_subFolderEval(self, 1) end },
             { title = "Sub Directories - Mixed",   checked = ( self.subFolderBehavior == 2 ), fn = function() l_subFolderEval(self, 2) end },
             { title = "Sub Directories - After",   checked = ( self.subFolderBehavior == 3 ), fn = function() l_subFolderEval(self, 3) end },
-            { title = "Prune Empty Directories",   checked = ( self.pruneEmpty ), fn = function() self.pruneEmpty = not self.pruneEmpty ; self.menuListRawdata = nil ; end },
+            { title = "Prune Empty Directories",   checked = ( self.pruneEmpty ), fn = function() self.pruneEmpty = not self.pruneEmpty ; self.menuListRawData = nil ; collectgarbage() ; end },
             { title = "-" },
             { title = "Show Icon",                 checked = ( self.menuView == 0 ),          fn = function() l_menuViewEval(self, 0) end  },
             { title = "Show Label",                checked = ( self.menuView == 1 ),          fn = function() l_menuViewEval(self, 1) end  },
@@ -374,7 +375,8 @@ local mt_fileListMenu = {
         subFolderDepth = function(self, x)
                             if type(x) == "number" then
                                 self.maxDepth = x
-                                self.menuListRawdata = nil
+                                self.menuListRawData = nil
+                                collectgarbage()
                             end
                             return self.maxDepth
                         end,
@@ -483,7 +485,8 @@ local mt_fileListMenu = {
         rootDirectory  = function(self, x)
                             if type(x) == "string" or type(x) == "table" then
                                 self.root = x
-                                self.menuListRawdata = nil
+                                self.menuListRawData = nil
+                                collectgarbage()
                             end
                             return self.root
                         end,
@@ -506,7 +509,8 @@ local mt_fileListMenu = {
         menuCriteria   = function(self, x)
                             if type(x) ~= "nil" then
                                 self.matchCriteria = x
-                                self.menuListRawdata = nil
+                                self.menuListRawData = nil
+                                collectgarbage()
                             end
                             return self.matchCriteria
                         end,
