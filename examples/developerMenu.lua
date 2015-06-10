@@ -58,6 +58,17 @@ devMenu:menuCriteria(function(file, path, purpose)
           -- disappears quickly (e.g. a lock file) before the pathwatcher process
           -- completes.
           if hs.fs.attributes(path.."/"..file, "mode") == "directory" then return true, file end
+
+          -- This is a trade off... since pathwatcher doesn't tell what change occurred,
+          -- just to what files it occurred, we can't really detect a delete without either
+          -- just returning true for all changes, which would mean an update every single time
+          -- any file in these development folders changed, or we would need a way to store
+          -- state to determine what has disappeared... for the sake of simplicity, I accept
+          -- the limitation that deleted directories may still be referenced in the menu...
+          -- accessing the current menus data structure to actually compare against to
+          -- truly detect deletes, if you care enough, is left as an exercise for the
+          -- reader :-)
+
           return false
       end
     end

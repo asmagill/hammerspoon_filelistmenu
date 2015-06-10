@@ -109,7 +109,6 @@ local l_populateMenu = function(self)
             if self.warnings then print("Menu root for "..self.label.." must be a string or a table of strings.") end
         end
         l_sortMenuItems(self)
-        collectgarbage() -- we may have just replaced a semi-large data structure
         self.menuLastUpdated = os.date()
     end
     return self
@@ -186,7 +185,6 @@ local l_subFolderEval = function(self, x)
         self.subFolderBehavior = y
         if populateNeeded then
             self.menuListRawData = nil
-            collectgarbage()
         else
             l_sortMenuItems(self)
         end
@@ -207,7 +205,7 @@ local l_doFileListMenu = function(self, mods)
             { title = "Sub Directories - Before",  checked = ( self.subFolderBehavior == 1 ), fn = function() l_subFolderEval(self, 1) end },
             { title = "Sub Directories - Mixed",   checked = ( self.subFolderBehavior == 2 ), fn = function() l_subFolderEval(self, 2) end },
             { title = "Sub Directories - After",   checked = ( self.subFolderBehavior == 3 ), fn = function() l_subFolderEval(self, 3) end },
-            { title = "Prune Empty Directories",   checked = ( self.pruneEmpty ), fn = function() self.pruneEmpty = not self.pruneEmpty ; self.menuListRawData = nil ; collectgarbage() ; end },
+            { title = "Prune Empty Directories",   checked = ( self.pruneEmpty ), fn = function() self.pruneEmpty = not self.pruneEmpty ; self.menuListRawData = nil ; end },
             { title = "-" },
             { title = "Show Icon",                 checked = ( self.menuView == 0 ),          fn = function() l_menuViewEval(self, 0) end  },
             { title = "Show Label",                checked = ( self.menuView == 1 ),          fn = function() l_menuViewEval(self, 1) end  },
@@ -254,7 +252,6 @@ local l_changeWatcher = function(self, paths)
     if doUpdate then
         self.lastChangeSeen = os.date()
         self.menuListRawData = nil        -- only rebuild when they actually look at it
-        collectgarbage()
         if self.warnings then print("Menu "..self.label.." Updated: "..name) end
     end
 end
@@ -283,7 +280,6 @@ local l_deactivateMenu = function(self)
     self.watcher = nil
     self.menuListRawData = nil
     self.menuUserdata = nil
-    collectgarbage()
     return self
 end
 
@@ -376,7 +372,6 @@ local mt_fileListMenu = {
                             if type(x) == "number" then
                                 self.maxDepth = x
                                 self.menuListRawData = nil
-                                collectgarbage()
                             end
                             return self.maxDepth
                         end,
@@ -486,7 +481,6 @@ local mt_fileListMenu = {
                             if type(x) == "string" or type(x) == "table" then
                                 self.root = x
                                 self.menuListRawData = nil
-                                collectgarbage()
                             end
                             return self.root
                         end,
@@ -510,7 +504,6 @@ local mt_fileListMenu = {
                             if type(x) ~= "nil" then
                                 self.matchCriteria = x
                                 self.menuListRawData = nil
-                                collectgarbage()
                             end
                             return self.matchCriteria
                         end,
