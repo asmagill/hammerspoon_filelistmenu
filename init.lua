@@ -11,6 +11,7 @@ local module = require("hs._asm.filelistmenu.internal")
 local pathwatcher = require "hs.pathwatcher"
 local luafs       = require "hs.fs"
 local menubar     = require "hs.menubar"
+local application = require "hs.application"
 
 -- private variables and methods -----------------------------------------
 
@@ -543,7 +544,7 @@ local mt_fileListMenu = {
         subFolderBehavior = 0,
         menuView          = 0,
         matchCriteria     = "([^/]+)%.app$",
-        template          = function(x) hs.application.launchOrFocus(x) end,
+        template          = function(x) application.launchOrFocus(x) end,
         folderTemplate    = function(x) os.execute([[open -a Finder "]]..x..[["]]) end,
         root              = "/Applications",
         menuLastUpdated   = "not yet",
