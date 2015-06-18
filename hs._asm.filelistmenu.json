@@ -60,6 +60,12 @@
       },
       {
         "type": "Method",
+        "name": "rightButtonSupport",
+        "def": "hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean",
+        "doc": "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.\n\nParameters:\n * Optional boolean value which sets the state of this flag\n\nReturns:\n * The current (or changed) value."
+      },
+      {
+        "type": "Method",
         "name": "pruneEmptyDirs",
         "def": "hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool",
         "doc": "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.\n\nParameters:\n * `bool` - optional argument which turns pruning on or off.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * This determines if subdirectories are examined during the Directory pass of the population process.  See `hs._asm.filelistmenu:populate()` for more information on this process."
@@ -110,7 +116,13 @@
         "type": "Function",
         "name": "keyModifiers",
         "def": "hs._asm.filelistmenu.keyModifiers() -> table",
-        "doc": "Returns a table containing the current key modifiers being pressed *at this instant*.  This makes it a useful function to check within an action or folder function if you wish to provide multiple possible actions when the user selects a menu item.\n\nParameters:\n None\n\nReturns:\n * Returns a table containing boolean values indicating which keyboard modifiers were held down when the menubar item was clicked; The possible keys are:\n    * cmd\n    * alt\n    * shift\n    * ctrl\n    * fn"
+        "doc": "Returns a table containing the current key modifiers being pressed *at this instant*.\n\nParameters:\n None\n\nReturns:\n * Returns a table containing boolean values indicating which keyboard modifiers were held down when the menubar item was clicked; The possible keys are:\n    * cmd\n    * alt\n    * shift\n    * ctrl\n    * fn\n\nNotes:\n * This is a useful function to check within an action or folder function if you wish to provide multiple possible actions when the user selects a menu item, as it is an instantaneous poll, rather then an event which will be queued until a lua callback can interpret it."
+      },
+      {
+        "type": "Function",
+        "name": "mouseButtons",
+        "def": "hs._asm.filelistmenu.mouseButtons() -> table",
+        "doc": "Returns a table containing the current mouse buttons being pressed *at this instant*.\n\nParameters:\n None\n\nReturns:\n * Returns an array containing indicies starting from 1 up to the highest numbered button currently being pressed where the index is `true` if the button is currently pressed or `false` if it is not.\n * Special hash tag synonyms for `left` (button 1) and `right` (button 2) are also set to true if these buttons are currently being pressed.\n\nNotes:\n * This is a useful function to check within an action or folder function if you wish to provide multiple possible actions when the user selects a menu item, as it is an instantaneous poll, rather then an event which will be queued until a lua callback can interpret it."
       }
     ]
   }

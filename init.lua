@@ -119,13 +119,13 @@ local l_updateMenuView = function(self)
     if self.menuUserdata then
         if self.menuView == 0 and self.icon then
             if self.menuUserdata:setIcon(self.icon) then
-                self.menuUserdata:setTitle("")
+                self.menuUserdata:setTitle(nil)
             else
                 self.menuUserdata:setTitle(self.label)
-                self.menuUserdata:setIcon("ASCII:")
+                self.menuUserdata:setIcon(nil)
             end
         else
-            self.menuUserdata:setIcon("ASCII:")
+            self.menuUserdata:setIcon(nil)
             self.menuUserdata:setTitle(self.label)
             if self.menuView == 2 and self.icon then
                 self.menuUserdata:setIcon(self.icon)
@@ -197,6 +197,9 @@ local l_doFileListMenu = function(self, mods)
     local showControlMenu = next(self.controlMenuMods) and true or false
     for i,v in pairs(mods) do if v and not self.controlMenuMods[i] then showControlMenu = false end end
     for i,v in pairs(self.controlMenuMods) do if v and not mods[i] then showControlMenu = false end end
+    if not showControlMenu and self.rightMouseControlMenu then
+        showControlMenu = module.mouseButtons()["right"]
+    end
 
     if showControlMenu then
         local optTable = {
@@ -414,6 +417,21 @@ local mt_fileListMenu = {
                             end
                             return self.controlMenuMods
                         end,
+--- hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean
+--- Method
+--- Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.
+---
+--- Parameters:
+---  * Optional boolean value which sets the state of this flag
+---
+--- Returns:
+---  * The current (or changed) value.
+        rightButtonSupport = function(self, x)
+                            if type(x) == "boolean" then
+                                self.rightMouseControlMenu = x
+                            end
+                            return self.rightMouseControlMenu
+                        end,
 --- hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool
 --- Method
 --- Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.
@@ -553,6 +571,7 @@ local mt_fileListMenu = {
         pruneEmpty        = true,
         maxDepth          = 10,
         controlMenuMods   = { ["ctrl"]=true },
+        rightMouseControlMenu = true,
     },
     __gc = function(self)
         return self:l_deactivateMenu()
