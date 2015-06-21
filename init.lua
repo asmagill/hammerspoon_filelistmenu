@@ -3,7 +3,8 @@
 ---
 --- This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.
 
-local module = require("hs._asm.filelistmenu.internal")
+--local module = require("hs._asm.filelistmenu.internal")
+local module = {}
 
 -- Need to add methods for adjusting status menu.  modify mods for status menu?
 
@@ -12,6 +13,7 @@ local pathwatcher = require "hs.pathwatcher"
 local luafs       = require "hs.fs"
 local menubar     = require "hs.menubar"
 local application = require "hs.application"
+local eventtap    = require "hs.eventtap"
 
 -- private variables and methods -----------------------------------------
 
@@ -198,7 +200,7 @@ local l_doFileListMenu = function(self, mods)
     for i,v in pairs(mods) do if v and not self.controlMenuMods[i] then showControlMenu = false end end
     for i,v in pairs(self.controlMenuMods) do if v and not mods[i] then showControlMenu = false end end
     if not showControlMenu and self.rightMouseControlMenu then
-        showControlMenu = module.mouseButtons()["right"]
+        showControlMenu = eventtap.checkMouseButtons()["right"]
     end
 
     if showControlMenu then

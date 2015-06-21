@@ -111,18 +111,6 @@
         "name": "delete",
         "def": "hs._asm.filelistmenu:delete() -> nil",
         "doc": "Deletes the menu by first deactivating it and then clearing its metadata.\n\nParameters:\n * None\n\nReturns:\n * nil\n\nNotes:\n * Unlike `deactivate`, this also removes the objects metadata, thus preventing the menu from being reactivated."
-      },
-      {
-        "type": "Function",
-        "name": "keyModifiers",
-        "def": "hs._asm.filelistmenu.keyModifiers() -> table",
-        "doc": "Returns a table containing the current key modifiers being pressed *at this instant*.\n\nParameters:\n None\n\nReturns:\n * Returns a table containing boolean values indicating which keyboard modifiers were held down when the menubar item was clicked; The possible keys are:\n    * cmd\n    * alt\n    * shift\n    * ctrl\n    * fn\n\nNotes:\n * This is a useful function to check within an action or folder function if you wish to provide multiple possible actions when the user selects a menu item, as it is an instantaneous poll, rather then an event which will be queued until a lua callback can interpret it."
-      },
-      {
-        "type": "Function",
-        "name": "mouseButtons",
-        "def": "hs._asm.filelistmenu.mouseButtons() -> table",
-        "doc": "Returns a table containing the current mouse buttons being pressed *at this instant*.\n\nParameters:\n None\n\nReturns:\n * Returns an array containing indicies starting from 1 up to the highest numbered button currently being pressed where the index is `true` if the button is currently pressed or `false` if it is not.\n * Special hash tag synonyms for `left` (button 1) and `right` (button 2) are also set to true if these buttons are currently being pressed.\n\nNotes:\n * This is a useful function to check within an action or folder function if you wish to provide multiple possible actions when the user selects a menu item, as it is an instantaneous poll, rather then an event which will be queued until a lua callback can interpret it."
       }
     ]
   }
