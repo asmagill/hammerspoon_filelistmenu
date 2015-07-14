@@ -339,9 +339,15 @@ local mt_fileListMenu = {
 ---
 --- Notes:
 ---  * If the file does not exist or the ASCII art is un-renderable, then the label is used instead.
-        menuIcon       = function(self, x)
-                            if type(x) == "string" then
-                                self.icon = tostring(x)
+        menuIcon       = function(self, ...)
+                            local x = table.pack(...)
+                            if x.n > 0 then
+                                x = x[1]
+                                if type(x) ~= "string" and type(x) ~= "userdata" and type(x) ~= "nil" then
+                                    self.icon = tostring(x)
+                                else
+                                    self.icon = x
+                                end
                                 l_updateMenuView(self)
                             end
                             return self.icon
@@ -355,9 +361,15 @@ local mt_fileListMenu = {
 ---
 --- Returns:
 ---  * The current (or changed) label.
-        menuLabel      = function(self, x)
-                            if type(x) ~= "nil" then
-                                self.label = tostring(x)
+        menuLabel      = function(self, ...)
+                            local x = table.pack(...)
+                            if x.n > 0 then
+                                x = x[1]
+                                if type(x) ~= "string" and type(x) ~= "nil" then
+                                    self.label = tostring(x)
+                                else
+                                    self.label = x
+                                end
                                 l_updateMenuView(self)
                             end
                             return self.label
