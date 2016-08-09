@@ -1,13 +1,23 @@
 hs._asm.filelistmenu
 ====================
 
-This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.  
+This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.
 
 See the `examples` directory for sample implementations.
 
 Because this module requires the `hs.menubar` module and the ASCII Art POD, this module is only supported by Hammerspoon and will not work, without porting some additional code, with Mjolnir.
 
 ### Local Install
+
+A prepackaged version of this module may be found in this directory with the name `filelistmenu-v0.x.tar.gz`. This can be installed by downloading the file and then expanding it as follows:
+
+~~~sh
+$ cd ~/.hammerspoon # or wherever your Hammerspoon init.lua file is located
+$ tar -xzf ~/Downloads/canvas-v0.x.tar.gz # or wherever your downloads are located
+~~~
+
+If you wish to install this module from the repository source, you can do the following:
+
 ~~~bash
 $ git clone https://github.com/asmagill/hammerspoon_filelistmenu
 $ cd hammerspoon_filelistmenu
