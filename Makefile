@@ -8,13 +8,12 @@ mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 
 MODULE := $(current_dir)
-PREFIX ?= ~/.hammerspoon/hs/_asm
+PREFIX ?= ~/.hammerspoon
 
 OBJCFILE = internal.m
 LUAFILE  = init.lua
 SOFILE  := $(OBJCFILE:.m=.so)
 DEBUG_CFLAGS ?= -g
-DOC_FILE = hs._asm.$(MODULE).json
 
 CC=cc
 EXTRA_CFLAGS ?= -fobjc-arc
@@ -25,8 +24,6 @@ ifeq ($(wildcard $(CURDIR)/$(OBJCFILE)),)
 
 ### Lua Only
 
-DOC_SOURCES = $(LUAFILE)
-
 all: verify
 
 install: install-lua
@@ -34,8 +31,6 @@ install: install-lua
 else
 
 ### Lua and Objective-C live together in perfect harmony
-
-DOC_SOURCES = $(LUAFILE) $(OBJCFILE)
 
 all: verify $(SOFILE)
 
@@ -52,29 +47,19 @@ verify: $(LUAFILE)
 	luac-5.3 -p $(LUAFILE) && echo "Passed" || echo "Failed"
 
 install-objc: $(SOFILE)
-	mkdir -p $(PREFIX)/$(MODULE)
-	install -m 0644 $(SOFILE) $(PREFIX)/$(MODULE)
+	mkdir -p $(PREFIX)/hs/_asm/$(MODULE)
+	install -m 0644 $(SOFILE) $(PREFIX)/hs/_asm/$(MODULE)
 
 install-lua: $(LUAFILE)
-	mkdir -p $(PREFIX)/$(MODULE)
-	install -m 0644 $(LUAFILE) $(PREFIX)/$(MODULE)
-
-docs: $(DOC_FILE)
-
-$(DOC_FILE): $(DOC_SOURCES)
-	find . -type f \( -name '*.lua' -o -name '*.m' \) -not -name 'template.*' -not -path './_*' -exec cat {} + | __doc_tools/gencomments | __doc_tools/genjson > $@
-
-install-docs: docs
-	mkdir -p $(PREFIX)/$(MODULE)
-	install -m 0644 $(DOC_FILE) $(PREFIX)/$(MODULE)
+	mkdir -p $(PREFIX)/hs/_asm/$(MODULE)
+	install -m 0644 $(LUAFILE) $(PREFIX)/hs/_asm/$(MODULE)
 
 clean:
-	rm -v -rf $(SOFILE) *.dSYM $(DOC_FILE)
+	rm -v -rf $(SOFILE) *.dSYM
 
 uninstall:
-	rm -v -f $(PREFIX)/$(MODULE)/$(LUAFILE)
-	rm -v -f $(PREFIX)/$(MODULE)/$(DOC_FILE)
-	rm -v -f $(PREFIX)/$(MODULE)/$(SOFILE)
-	rmdir -p $(PREFIX)/$(MODULE) ; exit 0
+	rm -v -f $(PREFIX)/hs/_asm/$(MODULE)/$(LUAFILE)
+	rm -v -f $(PREFIX)/hs/_asm/$(MODULE)/$(SOFILE)
+	rmdir -p $(PREFIX)/hs/_asm/$(MODULE) ; exit 0
 
-.PHONY: all clean uninstall verify docs install install-objc install-lua install-docs
+.PHONY: all clean uninstall verify install install-objc install-lua

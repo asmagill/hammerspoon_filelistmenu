@@ -222,7 +222,7 @@ local l_doFileListMenu = function(self, mods)
             { title = "List generated: "..self.menuLastUpdated, disabled = true },
             { title = "Last change seen: "..self.lastChangeSeen, disabled = true },
             { title = "-" },
-            { title = "Remove Menu", fn = function() self:deactivate() end  },
+            { title = "Remove Menu", fn = function() self:deactivate() end, disabled = not self.menuUserdata:isInMenubar()  },
         }
         if type(self.root) == "string" then
             table.insert(optTable, 2,

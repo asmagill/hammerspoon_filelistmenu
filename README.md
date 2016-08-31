@@ -1,6 +1,8 @@
 hs._asm.filelistmenu
 ====================
 
+* August 31, 2016 - Updated so detached menus suppress "Remove Menu" in the Control Menu. Makefile modified to put module in `$(PREFIX)/hs/_asm/` to conform with my other modules.
+
 This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.
 
 See the `examples` directory for sample implementations.
@@ -21,7 +23,7 @@ If you wish to install this module from the repository source, you can do the fo
 ~~~bash
 $ git clone https://github.com/asmagill/hammerspoon_filelistmenu
 $ cd hammerspoon_filelistmenu
-$ [PREFIX=/usr/local/share/lua/5.2/] make install
+$ [PREFIX=~/.hammerspoon] make install
 ~~~
 
 Note that if you do not provide `PREFIX`, then it defaults to ~/.hammerspoon.
