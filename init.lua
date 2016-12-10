@@ -29,35 +29,29 @@ l_generateAppList = function(self, startDir, expression, depth)
     else
 -- get files at this level -- we want a label and a path
         for name in luafs.dir(startDir) do
-            local label, accept
+            local label, acceptAsFile
             if type(expression) == "string" then
                 label = name:match(expression)
             elseif type(expression) == "function" then
-                accept, label = expression(name, startDir, "file")
-                if not accept then label = nil end
+                acceptAsFile, label = expression(name, startDir, "file")
+                if not acceptAsFile then label = nil end
             end
             if label then
+                acceptAsFile = true
                 list[#list+1] = { title = label, fn = function() self.template(startDir.."/"..name) end }
             end
-        end
-
-        if self.subFolderBehavior ~= 0 then
--- get sub-dirs at this level -- we want a label and a table -- recursion!
-            for name in luafs.dir(startDir) do
-                if not (name == "." or name == "..") and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
-                    local label, accept
+            -- check subdirectories only if the directory was not accepted as a "file"
+            if not acceptAsFile and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
+                if (self.subFolderBehavior or 2) ~= 0 and not (name == "." or name == "..") then
+                    local label, checkSubDirs
                     if type(expression) == "string" then
-                        if not name:match(expression) then
-                            accept = true
-                            label = name
-                        else
-                            accept = false
-                        end
+                        checkSubDirs, label = true, name
                     elseif type(expression) == "function" then
-                        accept, label = expression(name, startDir, "directory")
-                        if accept and label == nil then label = name end
+                        checkSubDirs, label = expression(name, startDir, "directory")
+                        if checkSubDirs and not label then label = name end
+                        if not checkSubDirs then label = nil end
                     end
-                    if accept then
+                    if checkSubDirs then
                         local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
                         if  next(subDirs) or not self.pruneEmpty then
                             if next(subDirs) then
