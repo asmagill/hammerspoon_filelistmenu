@@ -14,6 +14,7 @@ local luafs       = require "hs.fs"
 local menubar     = require "hs.menubar"
 local application = require "hs.application"
 local eventtap    = require "hs.eventtap"
+local stext       = require "hs.styledtext"
 
 -- private variables and methods -----------------------------------------
 
@@ -197,8 +198,9 @@ local l_doFileListMenu = function(self, mods)
         showControlMenu = eventtap.checkMouseButtons()["right"]
     end
 
+    local results = {}
     if showControlMenu then
-        local optTable = {
+        results = {
             { title = self.label.." fileListMenu" },
             { title = "-" },
             { title = "Sub Directories - Ignore",  checked = ( self.subFolderBehavior == 0 ), fn = function() l_subFolderEval(self, 0) end },
@@ -219,15 +221,22 @@ local l_doFileListMenu = function(self, mods)
             { title = "Remove Menu", fn = function() self:deactivate() end, disabled = not self.menuUserdata:isInMenubar()  },
         }
         if type(self.root) == "string" then
-            table.insert(optTable, 2,
+            table.insert(results, 2,
                 { title = "Open "..self.root.." in Finder", fn = function() os.execute([[open -a Finder "]]..self.root..[["]]) end }
             )
         end
-        return optTable
     else
         if not self.menuListRawData then l_populateMenu(self) end
-        return self.menuListRawData
+        for i,v in ipairs(self.menuListRawData) do table.insert(results, v) end
     end
+    table.insert(results, { title = "-" })
+    table.insert(results, { title = stext.new("fileListMenu for Hammerspoon", {
+                                font = stext.convertFont(stext.defaultFonts.menu, stext.fontTraits.italicFont),
+                                color = { list="x11", name="royalblue"},
+                                paragraphStyle = { alignment = "right" },
+                              }), disabled = true
+                          })
+    return results
 end
 
 local l_changeWatcher = function(self, paths)
