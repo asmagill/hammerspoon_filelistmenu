@@ -15,6 +15,7 @@ local menubar     = require "hs.menubar"
 local application = require "hs.application"
 local eventtap    = require "hs.eventtap"
 local stext       = require "hs.styledtext"
+local image       = require "hs.image"
 
 -- private variables and methods -----------------------------------------
 
@@ -39,7 +40,7 @@ l_generateAppList = function(self, startDir, expression, depth)
             end
             if label then
                 acceptAsFile = true
-                list[#list+1] = { title = label, fn = function() self.template(startDir.."/"..name) end }
+                list[#list+1] = { title = label, fn = function() self.template(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
             end
             -- check subdirectories only if the directory was not accepted as a "file"
             if not acceptAsFile and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
@@ -56,9 +57,9 @@ l_generateAppList = function(self, startDir, expression, depth)
                         local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
                         if  next(subDirs) or not self.pruneEmpty then
                             if next(subDirs) then
-                                list[#list+1] = { title = label, menu = subDirs, fn = function() self.folderTemplate(startDir.."/"..name) end }
+                                list[#list+1] = { title = label, menu = subDirs, fn = function() self.folderTemplate(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
                             else
-                                list[#list+1] = { title = label, fn = function() self.folderTemplate(startDir.."/"..name) end }
+                                list[#list+1] = { title = label, fn = function() self.folderTemplate(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
                             end
                         end
                     end
@@ -101,7 +102,7 @@ local l_populateMenu = function(self)
         elseif type(self.root) == "table" then
             self.menuListRawData = {}
             for i,v in pairs(self.root) do
-                table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end })
+                table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end, image = self.includeImages and image.iconForFile(v):size({ h = self.imageSize, w = self.imageSize }) or nil })
             end
         else
             if self.warnings then print("Menu root for "..self.label.." must be a string or a table of strings.") end
@@ -212,6 +213,9 @@ local l_doFileListMenu = function(self, mods)
             { title = "Show Icon",                 checked = ( self.menuView == 0 ),          fn = function() l_menuViewEval(self, 0) end  },
             { title = "Show Label",                checked = ( self.menuView == 1 ),          fn = function() l_menuViewEval(self, 1) end  },
             { title = "Show Both",                 checked = ( self.menuView == 2 ),          fn = function() l_menuViewEval(self, 2) end  },
+            { title = "-" },
+            { title = "Include Images for Items",  checked = self.includeImages,              fn = function()
+                self:itemImages(not self.includeImages) end },
             { title = "-" },
             { title = "Repopulate Now", fn = function() l_populateMenu(self) end },
             { title = "-" },
@@ -543,6 +547,20 @@ local mt_fileListMenu = {
                             end
                             return self.matchCriteria
                         end,
+        itemImages  = function(self, x)
+                            if type(x) ~= "nil" then
+                                self.includeImages = x
+                                self.menuListRawData = nil
+                            end
+                            return self.includeImages
+                        end,
+        itemImageSize = function(self, x)
+                            if type(x) ~= "nil" then
+                                self.imageSize = x
+                                self.menuListRawData = nil
+                            end
+                            return self.imageSize
+                        end,
 --- hs._asm.filelistmenu:populate() -> filelistmenu
 --- Method
 --- Scans the root directory/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.
@@ -589,6 +607,8 @@ local mt_fileListMenu = {
         maxDepth          = 10,
         controlMenuMods   = { ["ctrl"]=true },
         rightMouseControlMenu = true,
+        includeImages     = false,
+        imageSize         = 18,
     },
     __gc = function(self)
         return self:l_deactivateMenu()
