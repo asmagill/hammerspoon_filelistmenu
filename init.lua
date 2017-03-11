@@ -40,7 +40,11 @@ l_generateAppList = function(self, startDir, expression, depth)
             end
             if label then
                 acceptAsFile = true
-                list[#list+1] = { title = label, fn = function() self.template(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
+                list[#list+1] = {
+                    title = label,
+                    fn = function() self.template(startDir.."/"..name) end,
+                    image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                }
             end
             -- check subdirectories only if the directory was not accepted as a "file"
             if not acceptAsFile and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
@@ -54,13 +58,30 @@ l_generateAppList = function(self, startDir, expression, depth)
                         if not checkSubDirs then label = nil end
                     end
                     if checkSubDirs then
-                        local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
-                        if  next(subDirs) or not self.pruneEmpty then
-                            if next(subDirs) then
-                                list[#list+1] = { title = label, menu = subDirs, fn = function() self.folderTemplate(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
-                            else
-                                list[#list+1] = { title = label, fn = function() self.folderTemplate(startDir.."/"..name) end, image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil }
+                        if luafs.dir(startDir.."/"..name) then
+                            local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
+                            if  next(subDirs) or not self.pruneEmpty then
+                                if next(subDirs) then
+                                    list[#list+1] = {
+                                        title = label,
+                                        menu = subDirs,
+                                        fn = function() self.folderTemplate(startDir.."/"..name) end,
+                                        image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                                    }
+                                else
+                                    list[#list+1] = {
+                                        title = label,
+                                        fn = function() self.folderTemplate(startDir.."/"..name) end,
+                                        image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                                    }
+                                end
                             end
+                        else
+                            list[#list+1] = {
+                                title = label,
+                                disabled = true,
+                                image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                            }
                         end
                     end
                 end
