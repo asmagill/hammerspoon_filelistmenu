@@ -25,6 +25,7 @@ l_generateAppList = function(self, startDir, expression, depth)
     local expression = expression or self.matchCriteria
     local depth = depth or 1
     local list = {}
+-- print(depth, startDir, self)
 
     if depth > self.maxDepth then
         if self.warnings then print("Maximum search depth of "..self.maxDepth.." reached for menu "..self.label.." at "..startDir) end
@@ -38,12 +39,16 @@ l_generateAppList = function(self, startDir, expression, depth)
                 acceptAsFile, label = expression(name, startDir, "file")
                 if not acceptAsFile then label = nil end
             end
+
+            local fileImage = self.includeImages and image.iconForFile(startDir.."/"..name)
+            fileImage = fileImage and fileImage:size{ h = self.imageSize, w = self.imageSize } or nil
+
             if label then
                 acceptAsFile = true
                 list[#list+1] = {
                     title = label,
                     fn = function() self.template(startDir.."/"..name) end,
-                    image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                    image = fileImage
                 }
             end
             -- check subdirectories only if the directory was not accepted as a "file"
@@ -66,13 +71,13 @@ l_generateAppList = function(self, startDir, expression, depth)
                                         title = label,
                                         menu = subDirs,
                                         fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                        image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                                        image = fileImage
                                     }
                                 else
                                     list[#list+1] = {
                                         title = label,
                                         fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                        image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                                        image = fileImage
                                     }
                                 end
                             end
@@ -80,7 +85,7 @@ l_generateAppList = function(self, startDir, expression, depth)
                             list[#list+1] = {
                                 title = label,
                                 disabled = true,
-                                image = self.includeImages and image.iconForFile(startDir.."/"..name):size({ h = self.imageSize, w = self.imageSize }) or nil
+                                image = fileImage
                             }
                         end
                     end
@@ -123,7 +128,10 @@ local l_populateMenu = function(self)
         elseif type(self.root) == "table" then
             self.menuListRawData = {}
             for i,v in pairs(self.root) do
-                table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end, image = self.includeImages and image.iconForFile(v):size({ h = self.imageSize, w = self.imageSize }) or nil })
+                local fileImage = self.includeImages and image.iconForFile(v)
+                fileImage = fileImage and fileImage:size{ h = self.imageSize, w = self.imageSize } or nil
+
+                table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end, image = fileImage })
             end
         else
             if self.warnings then print("Menu root for "..self.label.." must be a string or a table of strings.") end
