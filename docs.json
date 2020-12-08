@@ -1,0 +1,908 @@
+[
+  {
+    "Constant" : [
+
+    ],
+    "submodules" : [
+
+    ],
+    "Function" : [
+
+    ],
+    "Variable" : [
+
+    ],
+    "stripped_doc" : [
+
+    ],
+    "desc" : "This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.",
+    "Deprecated" : [
+
+    ],
+    "type" : "Module",
+    "Constructor" : [
+      {
+        "doc" : "Creates a new filelist menu object.\n\nParameters:\n * `label` - A string label for this menu.  It is used as the menu title, if no icon is provided.\n\nReturns:\n * `filelistmenu` - the object which represents the menu created and is used as the target for the API methods which govern the menu's appearance and behavior.\n\nNotes:\n * Technically the label can be left out, in which case a label is generated from the address of an empty table and used instead.  Since the label is the default menu title and also appears in warning messages, this default is not recommended.",
+        "def" : "hs._asm.filelistmenu.new(label) -> filelistmenu",
+        "stripped_doc" : [
+          "Creates a new filelist menu object.",
+          ""
+        ],
+        "name" : "new",
+        "notes" : [
+          " * Technically the label can be left out, in which case a label is generated from the address of an empty table and used instead.  Since the label is the default menu title and also appears in warning messages, this default is not recommended."
+        ],
+        "signature" : "hs._asm.filelistmenu.new(label) -> filelistmenu",
+        "type" : "Constructor",
+        "returns" : [
+          " * `filelistmenu` - the object which represents the menu created and is used as the target for the API methods which govern the menu's appearance and behavior.",
+          ""
+        ],
+        "desc" : "Creates a new filelist menu object.",
+        "parameters" : [
+          " * `label` - A string label for this menu.  It is used as the menu title, if no icon is provided.",
+          ""
+        ]
+      }
+    ],
+    "doc" : "This module allows the easy creation of drop-down menubar items which contain file lists that match specified criteria.  The default settings make it trivial to create an Application launcher menu, but more complex menus are also possible.  The match criteria specified is also used to generate pathwatcher processes which keep the menu current.",
+    "Method" : [
+      {
+        "doc" : "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.\n\nParameters:\n * `item` - optional argument to set the menu display style to icon, label, or both.  Internally this is a number, but you can specify it as a string: 0 == \"icon\", 1 == \"label\", 2 == \"both\"\n\nReturns:\n * The current (or changed) setting as a number from 0 to 2.\n\nNotes:\n * If the icon is not set or is un-renderable, then the label will be displayed even if this is set icon only (0).",
+        "def" : "hs._asm.filelistmenu:showForMenu([item]) -> item",
+        "stripped_doc" : [
+          "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.",
+          ""
+        ],
+        "name" : "showForMenu",
+        "notes" : [
+          " * If the icon is not set or is un-renderable, then the label will be displayed even if this is set icon only (0)."
+        ],
+        "signature" : "hs._asm.filelistmenu:showForMenu([item]) -> item",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) setting as a number from 0 to 2.",
+          ""
+        ],
+        "desc" : "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.",
+        "parameters" : [
+          " * `item` - optional argument to set the menu display style to icon, label, or both.  Internally this is a number, but you can specify it as a string: 0 == \"icon\", 1 == \"label\", 2 == \"both\"",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.\n\nParameters:\n * `item` - optional argument specify how subfolders are to be sorted within the menu list results.  Internally this is a number, but you can specify it as a string: 0 == \"ignore\", 1 == \"before\", 2 == \"mixed\", 3 == \"after\"\n\nReturns:\n * The current (or changed) setting as a number from 0 to 3.\n\nNotes:\n * If subfolders are ignored, then they are not examined for potential menu list items.\n * Invalidates the menu cache if you change to or from Ignore (0), so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:subFolders([item]) -> item",
+        "stripped_doc" : [
+          "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.",
+          ""
+        ],
+        "name" : "subFolders",
+        "notes" : [
+          " * If subfolders are ignored, then they are not examined for potential menu list items.",
+          " * Invalidates the menu cache if you change to or from Ignore (0), so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:subFolders([item]) -> item",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) setting as a number from 0 to 3.",
+          ""
+        ],
+        "desc" : "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.",
+        "parameters" : [
+          " * `item` - optional argument specify how subfolders are to be sorted within the menu list results.  Internally this is a number, but you can specify it as a string: 0 == \"ignore\", 1 == \"before\", 2 == \"mixed\", 3 == \"after\"",
+          ""
+        ]
+      },
+      {
+        "doc" : "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.\n\nNotes:\n * The menu definition is not deleted, just it's cached data.  You could bring the menu back by issuing `savedMenu:activate()`.",
+        "def" : "hs._asm.filelistmenu:deactivate() -> filelistmenu",
+        "stripped_doc" : [
+          "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.",
+          ""
+        ],
+        "name" : "deactivate",
+        "notes" : [
+          " * The menu definition is not deleted, just it's cached data.  You could bring the menu back by issuing `savedMenu:activate()`."
+        ],
+        "signature" : "hs._asm.filelistmenu:deactivate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object.",
+          ""
+        ],
+        "desc" : "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.",
+        "def" : "hs._asm.filelistmenu:activate() -> filelistmenu",
+        "stripped_doc" : [
+          "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.",
+          ""
+        ],
+        "name" : "activate",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:activate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object."
+        ],
+        "desc" : "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.\n\nParameters:\n * `icon` - optional argument which specifies the icon's path, if it is a file, or defines the icon as an ASCII Art drawing.  See `hs.drawing.image` for more information.\n\nReturns:\n * The current (or changed) icon data.\n\nNotes:\n * If the file does not exist or the ASCII art is un-renderable, then the label is used instead.",
+        "def" : "hs._asm.filelistmenu:menuIcon([icon]) -> icon",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.",
+          ""
+        ],
+        "name" : "menuIcon",
+        "notes" : [
+          " * If the file does not exist or the ASCII art is un-renderable, then the label is used instead."
+        ],
+        "signature" : "hs._asm.filelistmenu:menuIcon([icon]) -> icon",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) icon data.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.",
+        "parameters" : [
+          " * `icon` - optional argument which specifies the icon's path, if it is a file, or defines the icon as an ASCII Art drawing.  See `hs.drawing.image` for more information.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.\n\nParameters:\n * `label` - optional argument which specifies the menu's label\n\nReturns:\n * The current (or changed) label.",
+        "def" : "hs._asm.filelistmenu:menuLabel([label]) -> label",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.",
+          ""
+        ],
+        "name" : "menuLabel",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:menuLabel([label]) -> label",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) label."
+        ],
+        "desc" : "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.",
+        "parameters" : [
+          " * `label` - optional argument which specifies the menu's label",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's label.\n\nParameters:\n * `depth` - optional argument which specifies how deep the module should search for items which match the specified criteria.  Default is 10.\n\nReturns:\n * The current (or changed) depth.\n\nNotes:\n * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:subFolderDepth([depth]) -> depth",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's label.",
+          ""
+        ],
+        "name" : "subFolderDepth",
+        "notes" : [
+          " * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:subFolderDepth([depth]) -> depth",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) depth.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the menu's label.",
+        "parameters" : [
+          " * `depth` - optional argument which specifies how deep the module should search for items which match the specified criteria.  Default is 10.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.\n\nParameters:\n * `bool` - optional argument which turns warning on or off.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * Warnings are issued when the max search depth is reached and when changed files are detected.  These are not problems per se, though you may want to tweak some of your settings, but it can get annoying if you use the console a lot.",
+        "def" : "hs._asm.filelistmenu:showWarnings([bool]) -> bool",
+        "stripped_doc" : [
+          "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.",
+          ""
+        ],
+        "name" : "showWarnings",
+        "notes" : [
+          " * Warnings are issued when the max search depth is reached and when changed files are detected.  These are not problems per se, though you may want to tweak some of your settings, but it can get annoying if you use the console a lot."
+        ],
+        "signature" : "hs._asm.filelistmenu:showWarnings([bool]) -> bool",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.",
+        "parameters" : [
+          " * `bool` - optional argument which turns warning on or off.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.\n\nParameters:\n * `mods` - optional argument which is a table containing the as keys to non-false values which represent the modifier keys which can be held down while clicking on the drop-down menu to display a control menu for modifying the menu's appearance.  Set to {} (the empty table) to disable access to the control menu.  The possible keys are:\n    * cmd\n    * alt\n    * shift\n    * ctrl\n    * fn\n\nReturns:\n * The current (or changed) value.",
+        "def" : "hs._asm.filelistmenu:controlMenu([mods]) -> mods",
+        "stripped_doc" : [
+          "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.",
+          ""
+        ],
+        "name" : "controlMenu",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:controlMenu([mods]) -> mods",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value."
+        ],
+        "desc" : "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.",
+        "parameters" : [
+          " * `mods` - optional argument which is a table containing the as keys to non-false values which represent the modifier keys which can be held down while clicking on the drop-down menu to display a control menu for modifying the menu's appearance.  Set to {} (the empty table) to disable access to the control menu.  The possible keys are:",
+          "    * cmd",
+          "    * alt",
+          "    * shift",
+          "    * ctrl",
+          "    * fn",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.\n\nParameters:\n * Optional boolean value which sets the state of this flag\n\nReturns:\n * The current (or changed) value.",
+        "def" : "hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean",
+        "stripped_doc" : [
+          "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.",
+          ""
+        ],
+        "name" : "rightButtonSupport",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value."
+        ],
+        "desc" : "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.",
+        "parameters" : [
+          " * Optional boolean value which sets the state of this flag",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.\n\nParameters:\n * `bool` - optional argument which turns pruning on or off.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * This determines if subdirectories are examined during the Directory pass of the population process.  See `hs._asm.filelistmenu:populate()` for more information on this process.",
+        "def" : "hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool",
+        "stripped_doc" : [
+          "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.",
+          ""
+        ],
+        "name" : "pruneEmptyDirs",
+        "notes" : [
+          " * This determines if subdirectories are examined during the Directory pass of the population process.  See `hs._asm.filelistmenu:populate()` for more information on this process."
+        ],
+        "signature" : "hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.",
+        "parameters" : [
+          " * `bool` - optional argument which turns pruning on or off.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.\n\nParameters:\n * `function` - optional argument defines a function which takes one argument and is invoked when the user selects an item from the menu.  The argument to the function is the path of the file which the menu item represents.\n\nReturns:\n * The current (or changed) function.",
+        "def" : "hs._asm.filelistmenu:actionFunction([function]) -> function",
+        "stripped_doc" : [
+          "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.",
+          ""
+        ],
+        "name" : "actionFunction",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:actionFunction([function]) -> function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) function."
+        ],
+        "desc" : "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.",
+        "parameters" : [
+          " * `function` - optional argument defines a function which takes one argument and is invoked when the user selects an item from the menu.  The argument to the function is the path of the file which the menu item represents.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.\n\nParameters:\n * `function` - optional argument defines a function which takes one argument and is invoked when the user selects a folder from the menu.  The argument to the function is the path of the folder which the menu item represents.\n\nReturns:\n * The current (or changed) function.\n\nNotes:\n * A menu item is considered a \"folder\" if it was detected during the \"Directory\" pass of the population process (see `hs._asm.filelistmenu:populate()` for more information).  This item may or may not actually have sub items (i.e. be a sub-menu) in the menu itself, depending upon your match criteria and the prune settings.",
+        "def" : "hs._asm.filelistmenu:folderFunction([function]) -> function",
+        "stripped_doc" : [
+          "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.",
+          ""
+        ],
+        "name" : "folderFunction",
+        "notes" : [
+          " * A menu item is considered a \"folder\" if it was detected during the \"Directory\" pass of the population process (see `hs._asm.filelistmenu:populate()` for more information).  This item may or may not actually have sub items (i.e. be a sub-menu) in the menu itself, depending upon your match criteria and the prune settings."
+        ],
+        "signature" : "hs._asm.filelistmenu:folderFunction([function]) -> function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) function.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.",
+        "parameters" : [
+          " * `function` - optional argument defines a function which takes one argument and is invoked when the user selects a folder from the menu.  The argument to the function is the path of the folder which the menu item represents.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".\n\nParameters:\n * `root` - optional argument which specifies the root directory for the menu (if it is a string) or a list of key-value pairs in a table where the key specifies an entry in the top level of the menu and the value specifies the path to be used as the root directory for the sub-menu of the entry.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * If you forget to define the list as key-value pairs, then your top-level menu will consist of numbers.\n * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:rootDirectory(root) -> string|table",
+        "stripped_doc" : [
+          "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".",
+          ""
+        ],
+        "name" : "rootDirectory",
+        "notes" : [
+          " * If you forget to define the list as key-value pairs, then your top-level menu will consist of numbers.",
+          " * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:rootDirectory(root) -> string|table",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".",
+        "parameters" : [
+          " * `root` - optional argument which specifies the root directory for the menu (if it is a string) or a list of key-value pairs in a table where the key specifies an entry in the top level of the menu and the value specifies the path to be used as the root directory for the sub-menu of the entry.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".\n\nParameters:\n * `criteria` - optional string or function which specifies the match criteria for populating the menu.\n   * If the argument is a string then it is used as the match expression for the lua function `string.match()` against each filename found by traversing in the root directory\/directories.  If you use parenthesis in the expression as a capture, then the first capture returned is used as the menu item label instead of the full filename when a match occurs.\n   * If the argument is a function, then it will be passed 3 arguments: filename, path (without the filename), purpose and is expected to return up to two parameters: true\/false, [label]\n     * The purpose argument will be \"file\", \"directory\", or \"update\" indicating if the request is to determine if this is a match for a filename (menu item), a match for a sub-directory (menu sub-menu), or a match for triggering an update because of a file change within the directory root(s).\n     * The function should return true if this is a match and should be included, or false if it should be skipped, and an optional label.  If the label is specified, this will be displayed in the menu, rather than the filename.  Label is ignored for \"update\" matches and if the result is false.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * See `hs._asm.filelistmenu:populate()` for more information on the difference between the \"file\" pass and the \"directory\" pass.",
+        "def" : "hs._asm.filelistmenu:menuCriteria(criteria) -> string|function",
+        "stripped_doc" : [
+          "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".",
+          ""
+        ],
+        "name" : "menuCriteria",
+        "notes" : [
+          " * See `hs._asm.filelistmenu:populate()` for more information on the difference between the \"file\" pass and the \"directory\" pass."
+        ],
+        "signature" : "hs._asm.filelistmenu:menuCriteria(criteria) -> string|function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".",
+        "parameters" : [
+          " * `criteria` - optional string or function which specifies the match criteria for populating the menu.",
+          "   * If the argument is a string then it is used as the match expression for the lua function `string.match()` against each filename found by traversing in the root directory\/directories.  If you use parenthesis in the expression as a capture, then the first capture returned is used as the menu item label instead of the full filename when a match occurs.",
+          "   * If the argument is a function, then it will be passed 3 arguments: filename, path (without the filename), purpose and is expected to return up to two parameters: true\/false, [label]",
+          "     * The purpose argument will be \"file\", \"directory\", or \"update\" indicating if the request is to determine if this is a match for a filename (menu item), a match for a sub-directory (menu sub-menu), or a match for triggering an update because of a file change within the directory root(s).",
+          "     * The function should return true if this is a match and should be included, or false if it should be skipped, and an optional label.  If the label is specified, this will be displayed in the menu, rather than the filename.  Label is ignored for \"update\" matches and if the result is false.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.\n\nNotes:\n * Populating the menu occurs in two passes, the \"file\" match pass and the \"directory\" match pass.\n\n     During the file match pass, files or directories which are to be listed as menu items (not sub-menus) are identified for the current search folder.  During the directory match pass, directories are identified and recursively searched for additional items.  Directories which are searched are added to the menu as sub-menus.\n\n     If the match criteria is a string, then the following occurs during each pass:\n       * File pass: any item, file or directory, which matches the match criteria is included as an item at this level of the menu.\n       * Directory pass: any directory that was NOT matched during the file pass is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.\n\n     If the match criteria is a function, the the following occurs during each pass:\n       * File pass: for each file and directory the function is invoked with the filename, path, and \"file\" as the purpose.  If this function returns `true`, then the filename is added as an item to the menu.\n       * Directory pass: for each directory -- even those matched during the file pass -- the function is invoked with the filename, path, and \"directory\" as the purpose.  If this function returns true, then the directory is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.\n\n * Each item matched during the \"file\" pass has their action attached to the `actionFunction`.\n * Each item matched during the \"directory\" pass has their action attached to the `folderFunction`.\n * If pruneEmptyDirs is set to true, then any examined sub-directory which does not contain any menu items is silently removed from the list.  If it is false, then empty subdirectories are included as menu items (i.e. no arrow to their right) and their action is tied to the `folderFunction`.\n * Directories will only be examined up to `maxDepth` levels deep.",
+        "def" : "hs._asm.filelistmenu:populate() -> filelistmenu",
+        "stripped_doc" : [
+          "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.",
+          ""
+        ],
+        "name" : "populate",
+        "notes" : [
+          " * Populating the menu occurs in two passes, the \"file\" match pass and the \"directory\" match pass.",
+          "",
+          "     During the file match pass, files or directories which are to be listed as menu items (not sub-menus) are identified for the current search folder.  During the directory match pass, directories are identified and recursively searched for additional items.  Directories which are searched are added to the menu as sub-menus.",
+          "",
+          "     If the match criteria is a string, then the following occurs during each pass:",
+          "       * File pass: any item, file or directory, which matches the match criteria is included as an item at this level of the menu.",
+          "       * Directory pass: any directory that was NOT matched during the file pass is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.",
+          "",
+          "     If the match criteria is a function, the the following occurs during each pass:",
+          "       * File pass: for each file and directory the function is invoked with the filename, path, and \"file\" as the purpose.  If this function returns `true`, then the filename is added as an item to the menu.",
+          "       * Directory pass: for each directory -- even those matched during the file pass -- the function is invoked with the filename, path, and \"directory\" as the purpose.  If this function returns true, then the directory is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.",
+          "",
+          " * Each item matched during the \"file\" pass has their action attached to the `actionFunction`.",
+          " * Each item matched during the \"directory\" pass has their action attached to the `folderFunction`.",
+          " * If pruneEmptyDirs is set to true, then any examined sub-directory which does not contain any menu items is silently removed from the list.  If it is false, then empty subdirectories are included as menu items (i.e. no arrow to their right) and their action is tied to the `folderFunction`.",
+          " * Directories will only be examined up to `maxDepth` levels deep."
+        ],
+        "signature" : "hs._asm.filelistmenu:populate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object.",
+          ""
+        ],
+        "desc" : "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Deletes the menu by first deactivating it and then clearing its metadata.\n\nParameters:\n * None\n\nReturns:\n * nil\n\nNotes:\n * Unlike `deactivate`, this also removes the objects metadata, thus preventing the menu from being reactivated.",
+        "def" : "hs._asm.filelistmenu:delete() -> nil",
+        "stripped_doc" : [
+          "Deletes the menu by first deactivating it and then clearing its metadata.",
+          ""
+        ],
+        "name" : "delete",
+        "notes" : [
+          " * Unlike `deactivate`, this also removes the objects metadata, thus preventing the menu from being reactivated."
+        ],
+        "signature" : "hs._asm.filelistmenu:delete() -> nil",
+        "type" : "Method",
+        "returns" : [
+          " * nil",
+          ""
+        ],
+        "desc" : "Deletes the menu by first deactivating it and then clearing its metadata.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      }
+    ],
+    "items" : [
+      {
+        "doc" : "Creates a new filelist menu object.\n\nParameters:\n * `label` - A string label for this menu.  It is used as the menu title, if no icon is provided.\n\nReturns:\n * `filelistmenu` - the object which represents the menu created and is used as the target for the API methods which govern the menu's appearance and behavior.\n\nNotes:\n * Technically the label can be left out, in which case a label is generated from the address of an empty table and used instead.  Since the label is the default menu title and also appears in warning messages, this default is not recommended.",
+        "def" : "hs._asm.filelistmenu.new(label) -> filelistmenu",
+        "stripped_doc" : [
+          "Creates a new filelist menu object.",
+          ""
+        ],
+        "name" : "new",
+        "notes" : [
+          " * Technically the label can be left out, in which case a label is generated from the address of an empty table and used instead.  Since the label is the default menu title and also appears in warning messages, this default is not recommended."
+        ],
+        "signature" : "hs._asm.filelistmenu.new(label) -> filelistmenu",
+        "type" : "Constructor",
+        "returns" : [
+          " * `filelistmenu` - the object which represents the menu created and is used as the target for the API methods which govern the menu's appearance and behavior.",
+          ""
+        ],
+        "desc" : "Creates a new filelist menu object.",
+        "parameters" : [
+          " * `label` - A string label for this menu.  It is used as the menu title, if no icon is provided.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.\n\nParameters:\n * `function` - optional argument defines a function which takes one argument and is invoked when the user selects an item from the menu.  The argument to the function is the path of the file which the menu item represents.\n\nReturns:\n * The current (or changed) function.",
+        "def" : "hs._asm.filelistmenu:actionFunction([function]) -> function",
+        "stripped_doc" : [
+          "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.",
+          ""
+        ],
+        "name" : "actionFunction",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:actionFunction([function]) -> function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) function."
+        ],
+        "desc" : "Sets or retrieves the function which specifies what action to take when an item is selected in the menu.  The default is a function which takes the path of the item selected and uses it as a parameter to `hs.application.launchOrFocus()`.",
+        "parameters" : [
+          " * `function` - optional argument defines a function which takes one argument and is invoked when the user selects an item from the menu.  The argument to the function is the path of the file which the menu item represents.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.",
+        "def" : "hs._asm.filelistmenu:activate() -> filelistmenu",
+        "stripped_doc" : [
+          "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.",
+          ""
+        ],
+        "name" : "activate",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:activate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object."
+        ],
+        "desc" : "Puts the menu into the menubar and activates the pathwatcher(s) to determine when to update the menu.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.\n\nParameters:\n * `mods` - optional argument which is a table containing the as keys to non-false values which represent the modifier keys which can be held down while clicking on the drop-down menu to display a control menu for modifying the menu's appearance.  Set to {} (the empty table) to disable access to the control menu.  The possible keys are:\n    * cmd\n    * alt\n    * shift\n    * ctrl\n    * fn\n\nReturns:\n * The current (or changed) value.",
+        "def" : "hs._asm.filelistmenu:controlMenu([mods]) -> mods",
+        "stripped_doc" : [
+          "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.",
+          ""
+        ],
+        "name" : "controlMenu",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:controlMenu([mods]) -> mods",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value."
+        ],
+        "desc" : "Sets or retrieves the modifiers which allow selecting a control menu variant which allows changing sort options, etc.  Default is { ctrl=true }.",
+        "parameters" : [
+          " * `mods` - optional argument which is a table containing the as keys to non-false values which represent the modifier keys which can be held down while clicking on the drop-down menu to display a control menu for modifying the menu's appearance.  Set to {} (the empty table) to disable access to the control menu.  The possible keys are:",
+          "    * cmd",
+          "    * alt",
+          "    * shift",
+          "    * ctrl",
+          "    * fn",
+          ""
+        ]
+      },
+      {
+        "doc" : "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.\n\nNotes:\n * The menu definition is not deleted, just it's cached data.  You could bring the menu back by issuing `savedMenu:activate()`.",
+        "def" : "hs._asm.filelistmenu:deactivate() -> filelistmenu",
+        "stripped_doc" : [
+          "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.",
+          ""
+        ],
+        "name" : "deactivate",
+        "notes" : [
+          " * The menu definition is not deleted, just it's cached data.  You could bring the menu back by issuing `savedMenu:activate()`."
+        ],
+        "signature" : "hs._asm.filelistmenu:deactivate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object.",
+          ""
+        ],
+        "desc" : "Removes the filelist menu from the menu bar, cancels the associated pathwatchers and clears the menu data from memory.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Deletes the menu by first deactivating it and then clearing its metadata.\n\nParameters:\n * None\n\nReturns:\n * nil\n\nNotes:\n * Unlike `deactivate`, this also removes the objects metadata, thus preventing the menu from being reactivated.",
+        "def" : "hs._asm.filelistmenu:delete() -> nil",
+        "stripped_doc" : [
+          "Deletes the menu by first deactivating it and then clearing its metadata.",
+          ""
+        ],
+        "name" : "delete",
+        "notes" : [
+          " * Unlike `deactivate`, this also removes the objects metadata, thus preventing the menu from being reactivated."
+        ],
+        "signature" : "hs._asm.filelistmenu:delete() -> nil",
+        "type" : "Method",
+        "returns" : [
+          " * nil",
+          ""
+        ],
+        "desc" : "Deletes the menu by first deactivating it and then clearing its metadata.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.\n\nParameters:\n * `function` - optional argument defines a function which takes one argument and is invoked when the user selects a folder from the menu.  The argument to the function is the path of the folder which the menu item represents.\n\nReturns:\n * The current (or changed) function.\n\nNotes:\n * A menu item is considered a \"folder\" if it was detected during the \"Directory\" pass of the population process (see `hs._asm.filelistmenu:populate()` for more information).  This item may or may not actually have sub items (i.e. be a sub-menu) in the menu itself, depending upon your match criteria and the prune settings.",
+        "def" : "hs._asm.filelistmenu:folderFunction([function]) -> function",
+        "stripped_doc" : [
+          "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.",
+          ""
+        ],
+        "name" : "folderFunction",
+        "notes" : [
+          " * A menu item is considered a \"folder\" if it was detected during the \"Directory\" pass of the population process (see `hs._asm.filelistmenu:populate()` for more information).  This item may or may not actually have sub items (i.e. be a sub-menu) in the menu itself, depending upon your match criteria and the prune settings."
+        ],
+        "signature" : "hs._asm.filelistmenu:folderFunction([function]) -> function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) function.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the function which specifies what action to take when a folder is selected in the menu.  The default is a function which takes the path of the fodler selected and opens it in the Finder.",
+        "parameters" : [
+          " * `function` - optional argument defines a function which takes one argument and is invoked when the user selects a folder from the menu.  The argument to the function is the path of the folder which the menu item represents.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".\n\nParameters:\n * `criteria` - optional string or function which specifies the match criteria for populating the menu.\n   * If the argument is a string then it is used as the match expression for the lua function `string.match()` against each filename found by traversing in the root directory\/directories.  If you use parenthesis in the expression as a capture, then the first capture returned is used as the menu item label instead of the full filename when a match occurs.\n   * If the argument is a function, then it will be passed 3 arguments: filename, path (without the filename), purpose and is expected to return up to two parameters: true\/false, [label]\n     * The purpose argument will be \"file\", \"directory\", or \"update\" indicating if the request is to determine if this is a match for a filename (menu item), a match for a sub-directory (menu sub-menu), or a match for triggering an update because of a file change within the directory root(s).\n     * The function should return true if this is a match and should be included, or false if it should be skipped, and an optional label.  If the label is specified, this will be displayed in the menu, rather than the filename.  Label is ignored for \"update\" matches and if the result is false.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * See `hs._asm.filelistmenu:populate()` for more information on the difference between the \"file\" pass and the \"directory\" pass.",
+        "def" : "hs._asm.filelistmenu:menuCriteria(criteria) -> string|function",
+        "stripped_doc" : [
+          "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".",
+          ""
+        ],
+        "name" : "menuCriteria",
+        "notes" : [
+          " * See `hs._asm.filelistmenu:populate()` for more information on the difference between the \"file\" pass and the \"directory\" pass."
+        ],
+        "signature" : "hs._asm.filelistmenu:menuCriteria(criteria) -> string|function",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the match criteria used to populate the menu. The default is \"([^\/]+)%.app$\".",
+        "parameters" : [
+          " * `criteria` - optional string or function which specifies the match criteria for populating the menu.",
+          "   * If the argument is a string then it is used as the match expression for the lua function `string.match()` against each filename found by traversing in the root directory\/directories.  If you use parenthesis in the expression as a capture, then the first capture returned is used as the menu item label instead of the full filename when a match occurs.",
+          "   * If the argument is a function, then it will be passed 3 arguments: filename, path (without the filename), purpose and is expected to return up to two parameters: true\/false, [label]",
+          "     * The purpose argument will be \"file\", \"directory\", or \"update\" indicating if the request is to determine if this is a match for a filename (menu item), a match for a sub-directory (menu sub-menu), or a match for triggering an update because of a file change within the directory root(s).",
+          "     * The function should return true if this is a match and should be included, or false if it should be skipped, and an optional label.  If the label is specified, this will be displayed in the menu, rather than the filename.  Label is ignored for \"update\" matches and if the result is false.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.\n\nParameters:\n * `icon` - optional argument which specifies the icon's path, if it is a file, or defines the icon as an ASCII Art drawing.  See `hs.drawing.image` for more information.\n\nReturns:\n * The current (or changed) icon data.\n\nNotes:\n * If the file does not exist or the ASCII art is un-renderable, then the label is used instead.",
+        "def" : "hs._asm.filelistmenu:menuIcon([icon]) -> icon",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.",
+          ""
+        ],
+        "name" : "menuIcon",
+        "notes" : [
+          " * If the file does not exist or the ASCII art is un-renderable, then the label is used instead."
+        ],
+        "signature" : "hs._asm.filelistmenu:menuIcon([icon]) -> icon",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) icon data.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the menu's icon.  If the icon is changed, and the menu has been activated, then the change goes into effect immediately.",
+        "parameters" : [
+          " * `icon` - optional argument which specifies the icon's path, if it is a file, or defines the icon as an ASCII Art drawing.  See `hs.drawing.image` for more information.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.\n\nParameters:\n * `label` - optional argument which specifies the menu's label\n\nReturns:\n * The current (or changed) label.",
+        "def" : "hs._asm.filelistmenu:menuLabel([label]) -> label",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.",
+          ""
+        ],
+        "name" : "menuLabel",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:menuLabel([label]) -> label",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) label."
+        ],
+        "desc" : "Sets or retrieves the menu's label.  If the label is changed, and the menu has been activated, then the change goes into effect immediately.",
+        "parameters" : [
+          " * `label` - optional argument which specifies the menu's label",
+          ""
+        ]
+      },
+      {
+        "doc" : "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.\n\nParameters:\n * None\n\nReturns:\n * `filelistmenu` - returns the file list menu object.\n\nNotes:\n * Populating the menu occurs in two passes, the \"file\" match pass and the \"directory\" match pass.\n\n     During the file match pass, files or directories which are to be listed as menu items (not sub-menus) are identified for the current search folder.  During the directory match pass, directories are identified and recursively searched for additional items.  Directories which are searched are added to the menu as sub-menus.\n\n     If the match criteria is a string, then the following occurs during each pass:\n       * File pass: any item, file or directory, which matches the match criteria is included as an item at this level of the menu.\n       * Directory pass: any directory that was NOT matched during the file pass is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.\n\n     If the match criteria is a function, the the following occurs during each pass:\n       * File pass: for each file and directory the function is invoked with the filename, path, and \"file\" as the purpose.  If this function returns `true`, then the filename is added as an item to the menu.\n       * Directory pass: for each directory -- even those matched during the file pass -- the function is invoked with the filename, path, and \"directory\" as the purpose.  If this function returns true, then the directory is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.\n\n * Each item matched during the \"file\" pass has their action attached to the `actionFunction`.\n * Each item matched during the \"directory\" pass has their action attached to the `folderFunction`.\n * If pruneEmptyDirs is set to true, then any examined sub-directory which does not contain any menu items is silently removed from the list.  If it is false, then empty subdirectories are included as menu items (i.e. no arrow to their right) and their action is tied to the `folderFunction`.\n * Directories will only be examined up to `maxDepth` levels deep.",
+        "def" : "hs._asm.filelistmenu:populate() -> filelistmenu",
+        "stripped_doc" : [
+          "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.",
+          ""
+        ],
+        "name" : "populate",
+        "notes" : [
+          " * Populating the menu occurs in two passes, the \"file\" match pass and the \"directory\" match pass.",
+          "",
+          "     During the file match pass, files or directories which are to be listed as menu items (not sub-menus) are identified for the current search folder.  During the directory match pass, directories are identified and recursively searched for additional items.  Directories which are searched are added to the menu as sub-menus.",
+          "",
+          "     If the match criteria is a string, then the following occurs during each pass:",
+          "       * File pass: any item, file or directory, which matches the match criteria is included as an item at this level of the menu.",
+          "       * Directory pass: any directory that was NOT matched during the file pass is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.",
+          "",
+          "     If the match criteria is a function, the the following occurs during each pass:",
+          "       * File pass: for each file and directory the function is invoked with the filename, path, and \"file\" as the purpose.  If this function returns `true`, then the filename is added as an item to the menu.",
+          "       * Directory pass: for each directory -- even those matched during the file pass -- the function is invoked with the filename, path, and \"directory\" as the purpose.  If this function returns true, then the directory is entered and the populate process begins anew in this sub-directory.  If results are found, then they are included as a sub-menu at the current level with the directory name as the label.",
+          "",
+          " * Each item matched during the \"file\" pass has their action attached to the `actionFunction`.",
+          " * Each item matched during the \"directory\" pass has their action attached to the `folderFunction`.",
+          " * If pruneEmptyDirs is set to true, then any examined sub-directory which does not contain any menu items is silently removed from the list.  If it is false, then empty subdirectories are included as menu items (i.e. no arrow to their right) and their action is tied to the `folderFunction`.",
+          " * Directories will only be examined up to `maxDepth` levels deep."
+        ],
+        "signature" : "hs._asm.filelistmenu:populate() -> filelistmenu",
+        "type" : "Method",
+        "returns" : [
+          " * `filelistmenu` - returns the file list menu object.",
+          ""
+        ],
+        "desc" : "Scans the root directory\/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.",
+        "parameters" : [
+          " * None",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.\n\nParameters:\n * `bool` - optional argument which turns pruning on or off.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * This determines if subdirectories are examined during the Directory pass of the population process.  See `hs._asm.filelistmenu:populate()` for more information on this process.",
+        "def" : "hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool",
+        "stripped_doc" : [
+          "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.",
+          ""
+        ],
+        "name" : "pruneEmptyDirs",
+        "notes" : [
+          " * This determines if subdirectories are examined during the Directory pass of the population process.  See `hs._asm.filelistmenu:populate()` for more information on this process."
+        ],
+        "signature" : "hs._asm.filelistmenu:pruneEmptyDirs([bool]) -> bool",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves whether or not empty directories are pruned from the menu list.  Default is true.",
+        "parameters" : [
+          " * `bool` - optional argument which turns pruning on or off.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.\n\nParameters:\n * Optional boolean value which sets the state of this flag\n\nReturns:\n * The current (or changed) value.",
+        "def" : "hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean",
+        "stripped_doc" : [
+          "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.",
+          ""
+        ],
+        "name" : "rightButtonSupport",
+        "notes" : [
+
+        ],
+        "signature" : "hs._asm.filelistmenu:rightButtonSupport([boolean]) -> boolean",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value."
+        ],
+        "desc" : "Sets or retrieves the flag which whether or not right clicking on a menubar menu item will select the control menu variant which allows changing sort options, etc.  Default is `true`.",
+        "parameters" : [
+          " * Optional boolean value which sets the state of this flag",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".\n\nParameters:\n * `root` - optional argument which specifies the root directory for the menu (if it is a string) or a list of key-value pairs in a table where the key specifies an entry in the top level of the menu and the value specifies the path to be used as the root directory for the sub-menu of the entry.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * If you forget to define the list as key-value pairs, then your top-level menu will consist of numbers.\n * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:rootDirectory(root) -> string|table",
+        "stripped_doc" : [
+          "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".",
+          ""
+        ],
+        "name" : "rootDirectory",
+        "notes" : [
+          " * If you forget to define the list as key-value pairs, then your top-level menu will consist of numbers.",
+          " * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:rootDirectory(root) -> string|table",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the root directory\/directories used for generating the file list of the menu. The default is \"\/Applications\".",
+        "parameters" : [
+          " * `root` - optional argument which specifies the root directory for the menu (if it is a string) or a list of key-value pairs in a table where the key specifies an entry in the top level of the menu and the value specifies the path to be used as the root directory for the sub-menu of the entry.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.\n\nParameters:\n * `item` - optional argument to set the menu display style to icon, label, or both.  Internally this is a number, but you can specify it as a string: 0 == \"icon\", 1 == \"label\", 2 == \"both\"\n\nReturns:\n * The current (or changed) setting as a number from 0 to 2.\n\nNotes:\n * If the icon is not set or is un-renderable, then the label will be displayed even if this is set icon only (0).",
+        "def" : "hs._asm.filelistmenu:showForMenu([item]) -> item",
+        "stripped_doc" : [
+          "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.",
+          ""
+        ],
+        "name" : "showForMenu",
+        "notes" : [
+          " * If the icon is not set or is un-renderable, then the label will be displayed even if this is set icon only (0)."
+        ],
+        "signature" : "hs._asm.filelistmenu:showForMenu([item]) -> item",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) setting as a number from 0 to 2.",
+          ""
+        ],
+        "desc" : "Sets or retrieves how the menu appears in the menu bar -- as an icon, a label, or both.  Default is 0.",
+        "parameters" : [
+          " * `item` - optional argument to set the menu display style to icon, label, or both.  Internally this is a number, but you can specify it as a string: 0 == \"icon\", 1 == \"label\", 2 == \"both\"",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.\n\nParameters:\n * `bool` - optional argument which turns warning on or off.\n\nReturns:\n * The current (or changed) value.\n\nNotes:\n * Warnings are issued when the max search depth is reached and when changed files are detected.  These are not problems per se, though you may want to tweak some of your settings, but it can get annoying if you use the console a lot.",
+        "def" : "hs._asm.filelistmenu:showWarnings([bool]) -> bool",
+        "stripped_doc" : [
+          "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.",
+          ""
+        ],
+        "name" : "showWarnings",
+        "notes" : [
+          " * Warnings are issued when the max search depth is reached and when changed files are detected.  These are not problems per se, though you may want to tweak some of your settings, but it can get annoying if you use the console a lot."
+        ],
+        "signature" : "hs._asm.filelistmenu:showWarnings([bool]) -> bool",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) value.",
+          ""
+        ],
+        "desc" : "Sets or retrieves whether or not warnings are printed to the Hammerspoon console.  Default is false.",
+        "parameters" : [
+          " * `bool` - optional argument which turns warning on or off.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves the menu's label.\n\nParameters:\n * `depth` - optional argument which specifies how deep the module should search for items which match the specified criteria.  Default is 10.\n\nReturns:\n * The current (or changed) depth.\n\nNotes:\n * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:subFolderDepth([depth]) -> depth",
+        "stripped_doc" : [
+          "Sets or retrieves the menu's label.",
+          ""
+        ],
+        "name" : "subFolderDepth",
+        "notes" : [
+          " * Invalidates the menu cache, so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:subFolderDepth([depth]) -> depth",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) depth.",
+          ""
+        ],
+        "desc" : "Sets or retrieves the menu's label.",
+        "parameters" : [
+          " * `depth` - optional argument which specifies how deep the module should search for items which match the specified criteria.  Default is 10.",
+          ""
+        ]
+      },
+      {
+        "doc" : "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.\n\nParameters:\n * `item` - optional argument specify how subfolders are to be sorted within the menu list results.  Internally this is a number, but you can specify it as a string: 0 == \"ignore\", 1 == \"before\", 2 == \"mixed\", 3 == \"after\"\n\nReturns:\n * The current (or changed) setting as a number from 0 to 3.\n\nNotes:\n * If subfolders are ignored, then they are not examined for potential menu list items.\n * Invalidates the menu cache if you change to or from Ignore (0), so a repopulation of the menu will take place next time the menu is clicked on.",
+        "def" : "hs._asm.filelistmenu:subFolders([item]) -> item",
+        "stripped_doc" : [
+          "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.",
+          ""
+        ],
+        "name" : "subFolders",
+        "notes" : [
+          " * If subfolders are ignored, then they are not examined for potential menu list items.",
+          " * Invalidates the menu cache if you change to or from Ignore (0), so a repopulation of the menu will take place next time the menu is clicked on."
+        ],
+        "signature" : "hs._asm.filelistmenu:subFolders([item]) -> item",
+        "type" : "Method",
+        "returns" : [
+          " * The current (or changed) setting as a number from 0 to 3.",
+          ""
+        ],
+        "desc" : "Sets or retrieves how the sub folders are sorted in the menu.  Default is 0.",
+        "parameters" : [
+          " * `item` - optional argument specify how subfolders are to be sorted within the menu list results.  Internally this is a number, but you can specify it as a string: 0 == \"ignore\", 1 == \"before\", 2 == \"mixed\", 3 == \"after\"",
+          ""
+        ]
+      }
+    ],
+    "Field" : [
+
+    ],
+    "Command" : [
+
+    ],
+    "name" : "hs._asm.filelistmenu"
+  }
+]

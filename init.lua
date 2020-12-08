@@ -6,6 +6,15 @@
 --local module = require("hs._asm.filelistmenu.internal")
 local module = {}
 
+local USERDATA_TAG = "hs._asm.filelistmenu"
+local basePath = package.searchpath(USERDATA_TAG, package.path)
+if basePath then
+    basePath = basePath:match("^(.+)/init.lua$")
+    if require"hs.fs".attributes(basePath .. "/docs.json") then
+        require"hs.doc".registerJSONFile(basePath .. "/docs.json")
+    end
+end
+
 -- Need to add methods for adjusting status menu.  modify mods for status menu?
 
 -- Technically not needed in hammerspoon, but good practice anyways
@@ -25,7 +34,6 @@ l_generateAppList = function(self, startDir, expression, depth)
     local expression = expression or self.matchCriteria
     local depth = depth or 1
     local list = {}
--- print(depth, startDir, self)
 
     if depth > self.maxDepth then
         if self.warnings then print("Maximum search depth of "..self.maxDepth.." reached for menu "..self.label.." at "..startDir) end
@@ -264,7 +272,11 @@ local l_doFileListMenu = function(self, mods)
     end
     table.insert(results, { title = "-" })
     table.insert(results, { title = stext.new("fileListMenu for Hammerspoon", {
-                                font = stext.convertFont(stext.defaultFonts.menu, stext.fontTraits.italicFont),
+--                                 font = stext.convertFont(stext.defaultFonts.menu, stext.fontTraits.italicFont),
+-- convert functions apparently haven't caught up with Big Sur because italicizing the default
+-- menu font gives ".SFNS-RegularItalic" which is now reported as "unknown". This seems to work
+-- for now, but will need to see if there is a new "preferred" way to "convert" fonts.
+                                font = { name = stext.defaultFonts.menu.name .. "Italic", size = stext.defaultFonts.menu.size },
                                 color = { list="x11", name="royalblue"},
                                 paragraphStyle = { alignment = "right" },
                               }), disabled = true
