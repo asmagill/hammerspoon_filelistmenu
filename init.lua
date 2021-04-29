@@ -39,62 +39,64 @@ l_generateAppList = function(self, startDir, expression, depth)
         if self.warnings then print("Maximum search depth of "..self.maxDepth.." reached for menu "..self.label.." at "..startDir) end
     else
 -- get files at this level -- we want a label and a path
-        for name in luafs.dir(startDir) do
-            local label, acceptAsFile
-            if type(expression) == "string" then
-                label = name:match(expression)
-            elseif type(expression) == "function" then
-                acceptAsFile, label = expression(name, startDir, "file")
-                if not acceptAsFile then label = nil end
-            end
+        if (luafs.attributes(startDir) or {}).mode == "directory" then
+            for name in luafs.dir(startDir) do
+                local label, acceptAsFile
+                if type(expression) == "string" then
+                    label = name:match(expression)
+                elseif type(expression) == "function" then
+                    acceptAsFile, label = expression(name, startDir, "file")
+                    if not acceptAsFile then label = nil end
+                end
 
-            local fileImage = self.includeImages and image.iconForFile(startDir.."/"..name)
-            fileImage = fileImage and fileImage:size{ h = self.imageSize, w = self.imageSize } or nil
+                local fileImage = self.includeImages and image.iconForFile(startDir.."/"..name)
+                fileImage = fileImage and fileImage:size{ h = self.imageSize, w = self.imageSize } or nil
 
-            if label then
-                acceptAsFile = true
-                list[#list+1] = {
-                    title = label,
-                    fn = function() self.template(startDir.."/"..name) end,
-                    image = fileImage
-                }
-            end
-            -- check subdirectories only if the directory was not accepted as a "file"
-            if not acceptAsFile and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
-                if (self.subFolderBehavior or 2) ~= 0 and not (name == "." or name == "..") then
-                    local label, checkSubDirs
-                    if type(expression) == "string" then
-                        checkSubDirs, label = true, name
-                    elseif type(expression) == "function" then
-                        checkSubDirs, label = expression(name, startDir, "directory")
-                        if checkSubDirs and not label then label = name end
-                        if not checkSubDirs then label = nil end
-                    end
-                    if checkSubDirs then
-                        if luafs.dir(startDir.."/"..name) then
-                            local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
-                            if  next(subDirs) or not self.pruneEmpty then
-                                if next(subDirs) then
-                                    list[#list+1] = {
-                                        title = label,
-                                        menu = subDirs,
-                                        fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                        image = fileImage
-                                    }
-                                else
-                                    list[#list+1] = {
-                                        title = label,
-                                        fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                        image = fileImage
-                                    }
+                if label then
+                    acceptAsFile = true
+                    list[#list+1] = {
+                        title = label,
+                        fn = function() self.template(startDir.."/"..name) end,
+                        image = fileImage
+                    }
+                end
+                -- check subdirectories only if the directory was not accepted as a "file"
+                if not acceptAsFile and luafs.attributes(startDir.."/"..name, "mode") == "directory" then
+                    if (self.subFolderBehavior or 2) ~= 0 and not (name == "." or name == "..") then
+                        local label, checkSubDirs
+                        if type(expression) == "string" then
+                            checkSubDirs, label = true, name
+                        elseif type(expression) == "function" then
+                            checkSubDirs, label = expression(name, startDir, "directory")
+                            if checkSubDirs and not label then label = name end
+                            if not checkSubDirs then label = nil end
+                        end
+                        if checkSubDirs then
+                            if luafs.dir(startDir.."/"..name) then
+                                local subDirs = l_generateAppList(self, startDir.."/"..name, expression, depth + 1)
+                                if  next(subDirs) or not self.pruneEmpty then
+                                    if next(subDirs) then
+                                        list[#list+1] = {
+                                            title = label,
+                                            menu = subDirs,
+                                            fn = function() self.folderTemplate(startDir.."/"..name) end,
+                                            image = fileImage
+                                        }
+                                    else
+                                        list[#list+1] = {
+                                            title = label,
+                                            fn = function() self.folderTemplate(startDir.."/"..name) end,
+                                            image = fileImage
+                                        }
+                                    end
                                 end
+                            else
+                                list[#list+1] = {
+                                    title = label,
+                                    disabled = true,
+                                    image = fileImage
+                                }
                             end
-                        else
-                            list[#list+1] = {
-                                title = label,
-                                disabled = true,
-                                image = fileImage
-                            }
                         end
                     end
                 end
