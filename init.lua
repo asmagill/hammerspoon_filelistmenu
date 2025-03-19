@@ -44,6 +44,9 @@ l_generateAppList = function(self, startDir, expression, depth)
                 local label, acceptAsFile
                 if type(expression) == "string" then
                     label = name:match(expression)
+										if label and label:match("%.localized$") then
+												label = luafs.displayName(startDir.."/"..name)
+										end
                 elseif type(expression) == "function" then
                     acceptAsFile, label = expression(name, startDir, "file")
                     if not acceptAsFile then label = nil end
@@ -57,7 +60,8 @@ l_generateAppList = function(self, startDir, expression, depth)
                     list[#list+1] = {
                         title = label,
                         fn = function() self.template(startDir.."/"..name) end,
-                        image = fileImage
+                        image = fileImage,
+                        tooltip = startDir.."/"..name,
                     }
                 end
                 -- check subdirectories only if the directory was not accepted as a "file"
@@ -66,6 +70,9 @@ l_generateAppList = function(self, startDir, expression, depth)
                         local label, checkSubDirs
                         if type(expression) == "string" then
                             checkSubDirs, label = true, name
+														if label and label:match("%.localized$") then
+																label = luafs.displayName(startDir.."/"..name)
+														end
                         elseif type(expression) == "function" then
                             checkSubDirs, label = expression(name, startDir, "directory")
                             if checkSubDirs and not label then label = name end
@@ -80,13 +87,13 @@ l_generateAppList = function(self, startDir, expression, depth)
                                             title = label,
                                             menu = subDirs,
                                             fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                            image = fileImage
+                                            image = fileImage,
                                         }
                                     else
                                         list[#list+1] = {
                                             title = label,
                                             fn = function() self.folderTemplate(startDir.."/"..name) end,
-                                            image = fileImage
+                                            image = fileImage,
                                         }
                                     end
                                 end
@@ -131,6 +138,24 @@ local l_sortMenuItems = function(self)
     end
 end
 
+local l_mergeSources
+l_mergeSources = function(self, rawData, newData)
+		for _1, v1 in ipairs(newData) do
+				local subMenuExists = false
+				if v1.menu then
+						for i2, v2 in ipairs(rawData) do
+								if not subMenuExists and v2.menu and v1.title == v2.title then
+										subMenuExists = true
+										l_mergeSources(self, v2.menu, v1.menu)
+								end
+						end
+				end
+				if not subMenuExists then
+						table.insert(rawData, v1)
+				end
+		end
+end
+
 local l_populateMenu = function(self)
     if self.menuUserdata then
         if type(self.root) == "string" then
@@ -141,7 +166,16 @@ local l_populateMenu = function(self)
                 local fileImage = self.includeImages and image.iconForFile(v)
                 fileImage = fileImage and fileImage:size{ h = self.imageSize, w = self.imageSize } or nil
 
-                table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end, image = fileImage })
+								if self.merge then
+										local temp = l_generateAppList(self, v)
+										if #self.menuListRawData == 0 then
+												self.menuListRawData = temp
+										else
+												l_mergeSources(self, self.menuListRawData, temp)
+										end
+								else
+										table.insert(self.menuListRawData, { title = i, menu = l_generateAppList(self, v), fn = function() self.folderTemplate(v) end, image = fileImage, tooltip = v })
+								end
             end
         else
             if self.warnings then print("Menu root for "..self.label.." must be a string or a table of strings.") end
@@ -267,6 +301,23 @@ local l_doFileListMenu = function(self, mods)
             table.insert(results, 2,
                 { title = "Open "..self.root.." in Finder", fn = function() os.execute([[open -a Finder "]]..self.root..[["]]) end }
             )
+        else
+        		table.insert(results, 15,
+								{ title = "Merge Sources",  checked = self.merge, fn = function()
+										self:mergeSources(not self.merge) end }
+						)
+        		if self.merge == true then
+								local sources = {}
+								for k, v in pairs(self.root) do
+										table.insert(sources, { title = "Open "..k.." in Finder", fn = function() os.execute([[open -a Finder "]]..v..[["]]) end, tooltip = v })
+								end
+								table.sort(sources, function(c,d)
+										return string.lower(c.title) < string.lower(d.title)
+								end)
+								table.insert(results, 2,
+										{ title = "Menu Sources", menu = sources }
+								)
+						end
         end
     else
         if not self.menuListRawData then l_populateMenu(self) end
@@ -350,7 +401,7 @@ end
 ---  * `filelistmenu` - returns the file list menu object.
 local l_activateMenu = function(self)
     if not self.menuUserdata then
-        self.menuUserdata = menubar.new()
+        self.menuUserdata = menubar.new():autosaveName(self.label)
         if type(self.root) == "string" then
             self.watcher = pathwatcher.new(self.root, function(paths) l_changeWatcher(self, paths) end):start()
         elseif type(self.root) == "table" then
@@ -604,6 +655,13 @@ local mt_fileListMenu = {
                             end
                             return self.imageSize
                         end,
+        mergeSources  = function(self, x)
+        										if type(x) ~= "nil" then
+        												self.merge = x
+        												self.menuListRawData = nil
+        										end
+        										return self.merge
+        								end,
 --- hs._asm.filelistmenu:populate() -> filelistmenu
 --- Method
 --- Scans the root directory/directories and builds the drop-down menu which will be displayed when the user clicks on the menu in the menubar.
@@ -652,6 +710,7 @@ local mt_fileListMenu = {
         rightMouseControlMenu = true,
         includeImages     = false,
         imageSize         = 18,
+        merge             = false,
     },
     __gc = function(self)
         return self:l_deactivateMenu()
